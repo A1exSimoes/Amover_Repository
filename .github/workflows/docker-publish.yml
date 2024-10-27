@@ -1,4 +1,4 @@
-name: Build and Push Docker image
+name: Build and Push Docker Image
 
 # Especifica quando o workflow deve ser executado (neste caso, ao criar um release)
 on:
@@ -23,12 +23,12 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}  # Nome de utilizador guardado nos secrets
-          password: ${{ secrets.DOCKER_PASSWORD }}  # Palavra-passe guardada nos secrets
+          username: ${{ secrets.DOCKER_USERNAME }} # Nome de utilizador guardado nos secrets
+          password: ${{ secrets.DOCKER_PASSWORD }} # Palavra-passe guardada nos secrets
 
       # Passo 4: Construir e enviar (push) a imagem para o Docker Hub
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/meu-projeto:${{ github.ref_name }}  # Nome da imagem/tag
+          tags: ${{ secrets.DOCKER_USERNAME }}/meu-projeto:${{ github.ref_name }} # Nome da imagem/tag
