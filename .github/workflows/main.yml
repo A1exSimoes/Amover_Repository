@@ -1,0 +1,34 @@
+name: Build and Push Docker image
+
+# Especifica quando o workflow deve ser executado (neste caso, ao criar um release)
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    # A ação será executada num ambiente Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      # Passo 1: Fazer checkout do código (obter o código do repositório)
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Passo 2: Configurar o Docker Buildx (para builds multi-plataforma)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Passo 3: Fazer login no Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}  # Nome de utilizador guardado nos secrets
+          password: ${{ secrets.DOCKER_PASSWORD }}  # Palavra-passe guardada nos secrets
+
+      # Passo 4: Construir e enviar (push) a imagem para o Docker Hub
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/meu-projeto:${{ github.ref_name }}  # Nome da imagem/tag
